@@ -5,11 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(LOGGER_SOURCE logger.h logger.cpp)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(SOURCE_FOR_OpenXLSX ${CMAKE_CURRENT_LIST_DIR}/OpenXLSX-release)
-else()
-    set(SOURCE_FOR_OpenXLSX ${CMAKE_CURRENT_LIST_DIR}/OpenXLSX-debug)
-endif ()
+
+set(SOURCE_FOR_OpenXLSX ${CMAKE_CURRENT_BINARY_DIR}/OpenXLSX)
 
 configure_file(CMakeLists.txt.in OpenXLSX-download/CMakeLists.txt)
 
