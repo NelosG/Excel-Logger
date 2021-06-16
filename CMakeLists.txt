@@ -23,7 +23,6 @@ endif()
 add_subdirectory(
         ${CMAKE_CURRENT_BINARY_DIR}/OpenXLSX-src
         ${CMAKE_CURRENT_BINARY_DIR}/OpenXLSX-build
-        EXCLUDE_FROM_ALL
 )
 
 add_library(logger-static STATIC "")
