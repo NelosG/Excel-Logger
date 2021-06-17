@@ -26,6 +26,7 @@ XLWorksheet get_sheet(const XLDocument &doc, const std::string &name) {
 }
 
 bool logger::set_page(const std::string &name) {
+    check_state();
     bool ret = false;
     if (sheet_init && sheet.name( ) == name) {
         return ret;
@@ -42,12 +43,14 @@ bool logger::set_page(const std::string &name) {
 }
 
 logger &logger::next_line() {
+    check_state();
     ++row;
     column = 1;
     return *this;
 }
 
 void logger::set_heading(const std::vector<std::string> &heading) {
+    check_state();
     int row_temp = row;
     int column_temp = column;
     row = 1;
@@ -67,19 +70,32 @@ void logger::set_page(const std::string &name,
     set_heading(heading);
 }
 
-void logger::flush() { doc.save( ); }
+void logger::flush() {
+    check_state();
+    doc.save( );
+}
 
 void logger::close() {
-    if (doc.workbook( ).sheetExists("Sheet1")) {
-        doc.workbook( ).deleteSheet("Sheet1");
+    if(!closed) {
+        if (doc.workbook( ).sheetExists("Sheet1")) {
+            doc.workbook( ).deleteSheet("Sheet1");
+        }
+        doc.save( );
+        doc.close( );
+        closed = true;
     }
-    doc.save( );
-    doc.close( );
 }
 
 logger &logger::operator<<(const char &s) {
+    check_state();
     if (s == '\n') {
         return next_line( );
     }
     return write(s);
+}
+
+void logger::check_state() const {
+    if(closed) {
+        throw std::runtime_error("Illegal state.");
+    }
 }

@@ -18,6 +18,9 @@ class logger {
     XLWorksheet sheet;
     bool sheet_init = false;
     int row = 1, column = 1;
+    bool closed = false;
+
+    void check_state() const;
 
 public:
     explicit logger(const std::string &path);
@@ -40,6 +43,7 @@ public:
 
     template<typename T>
     logger &write(const T &s) {
+        check_state();
         sheet.cell(XLCellReference(row, column++)).value( ) = s;
         return *this;
     }
