@@ -4,6 +4,7 @@
 
 #ifndef LOGGER_H
 #define LOGGER_H
+
 #include <OpenXLSX.hpp>
 #include <map>
 #include <sstream>
@@ -21,9 +22,15 @@ class logger {
 public:
     explicit logger(const std::string &path);
 
-    bool set_page(const std::string &name);// true if already exists, if false you must can set_heading
+    logger(const std::string &path, bool add);
+
+    bool set_page(const std::string &name); // true if already exists, if false
+
+    // you must can set_heading
     void set_heading(const std::vector<std::string> &heading);
-    void set_page(const std::string &name, const std::vector<std::string> &heading);
+
+    void set_page(const std::string &name,
+                  const std::vector<std::string> &heading);
 
     logger &next_line();
 
@@ -33,7 +40,7 @@ public:
 
     template<typename T>
     logger &write(const T &s) {
-        sheet.cell(XLCellReference(row, column++)).value() = s;
+        sheet.cell(XLCellReference(row, column++)).value( ) = s;
         return *this;
     }
 
@@ -41,24 +48,27 @@ public:
     logger &write(const T &s, Args... ss) {
         return write(s), write(ss...);
     }
+
     template<typename T>
     logger &writeln(const T &s) {
         logger &ret = write(s);
-        next_line();
+        next_line( );
         return ret;
     }
+
     template<typename T, typename... Args>
     logger &writeln(const T &s, Args... ss) {
         logger &ret = (write(s), write(ss...));
-        next_line();
+        next_line( );
         return ret;
     }
 
     template<typename T>
-    logger &operator<<(T s) {
-        return write(s);
-    }
+    logger &operator<<(const T &s) { return write(s); }
+
+    logger &operator<<(const char &s);
+
+    ~logger() { close( ); }
 };
 
-
-#endif//LOGGER_H
+#endif // LOGGER_H
