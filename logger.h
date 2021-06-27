@@ -27,9 +27,9 @@ public:
 
     logger(const std::string &path, bool add);
 
-    bool set_page(const std::string &name); // true if already exists, if false
+    bool set_page(const std::string &name); // true if created new page, else false
 
-    // you must can set_heading
+    // you can set_heading
     void set_heading(const std::vector<std::string> &heading);
 
     void set_page(const std::string &name,
