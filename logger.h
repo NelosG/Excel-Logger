@@ -23,9 +23,7 @@ class logger {
     void check_state() const;
 
 public:
-    explicit logger(const std::string &path);
-
-    logger(const std::string &path, bool add);
+    explicit logger(const std::string &path, bool add = false);
 
     bool set_page(const std::string &name); // true if created new page, else false
 

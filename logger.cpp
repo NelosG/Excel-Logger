@@ -7,8 +7,6 @@
 
 using namespace OpenXLSX;
 
-logger::logger(const std::string &path) : logger(path, false) {}
-
 logger::logger(const std::string &path, bool add) {
     try {
         if (add) {
