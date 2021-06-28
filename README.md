@@ -73,7 +73,7 @@ Put the following code in your CMakeLists.txt:
         lg.set_page("Test");       // be sure that you set at least 1 page
         
         lg.set_heading({"1,2,3"});  // set your heading at row 0
-                                            // does not reset the position
+                                    // does not reset the position
     
         lg.write("Hello", 2, 3); // writes each object passed by comma into a separate
                                     // cell of the table (starting from the current position)
