@@ -19,8 +19,7 @@ logger::logger(const std::string &path, bool add) {
 }
 
 XLWorksheet get_sheet(const XLDocument &doc, const std::string &name) {
-    XLSheet shet = doc.workbook( ).sheet(name);
-    return XLWorksheet(shet.get_Data( ));
+    return XLWorksheet(doc.workbook( ).sheet(name));
 }
 
 bool logger::set_page(const std::string &name) {

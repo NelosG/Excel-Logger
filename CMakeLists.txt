@@ -33,4 +33,4 @@ target_sources(logger PUBLIC logger.h logger.cpp)
 target_include_directories(logger
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)     # For export header
-target_link_libraries(logger PUBLIC OpenXLSX-shared)
+target_link_libraries(logger PUBLIC OpenXLSX)
