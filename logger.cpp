@@ -37,7 +37,7 @@ bool logger::set_page(const std::string &name) {
     column = 1;
     sheet_init = true;
     if(just_created) {
-        if (doc.workbook( ).sheetExists("Sheet1")) {
+        if (name != "Sheet1" && doc.workbook( ).sheetExists("Sheet1")) {
             doc.workbook( ).deleteSheet("Sheet1");
         }
         just_created = false;
