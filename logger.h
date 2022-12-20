@@ -19,6 +19,7 @@ class logger {
     bool sheet_init = false;
     int row = 1, column = 1;
     bool closed = false;
+    bool just_created = true;
 
     void check_state() const;
 

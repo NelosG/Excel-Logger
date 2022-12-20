@@ -36,6 +36,12 @@ bool logger::set_page(const std::string &name) {
     row = 1;
     column = 1;
     sheet_init = true;
+    if(just_created) {
+        if (doc.workbook( ).sheetExists("Sheet1")) {
+            doc.workbook( ).deleteSheet("Sheet1");
+        }
+        just_created = false;
+    }
     return ret;
 }
 
@@ -74,9 +80,6 @@ void logger::flush() {
 
 void logger::close() {
     if(!closed) {
-        if (doc.workbook( ).sheetExists("Sheet1")) {
-            doc.workbook( ).deleteSheet("Sheet1");
-        }
         doc.save( );
         doc.close( );
         closed = true;
