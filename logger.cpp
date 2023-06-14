@@ -4,10 +4,18 @@
 
 #include <OpenXLSX.hpp>
 #include <logger.h>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 using namespace OpenXLSX;
 
+void createDirs(const std::string &path) {
+    auto fs_path = fs::path(path);
+    fs::create_directories(fs_path.parent_path());
+}
+
 logger::logger(const std::string &path, bool add) {
+    createDirs(path);
     try {
         if (add) {
             doc.open(path);
@@ -19,26 +27,26 @@ logger::logger(const std::string &path, bool add) {
 }
 
 XLWorksheet get_sheet(const XLDocument &doc, const std::string &name) {
-    return doc.workbook( ).sheet(name);
+    return doc.workbook().sheet(name);
 }
 
 bool logger::set_page(const std::string &name) {
     check_state();
     bool ret = false;
-    if (sheet_init && sheet.name( ) == name) {
+    if (sheet_init && sheet.name() == name) {
         return ret;
     }
-    if (!doc.workbook( ).worksheetExists(name)) {
-        doc.workbook( ).addWorksheet(name);
+    if (!doc.workbook().worksheetExists(name)) {
+        doc.workbook().addWorksheet(name);
         ret = true;
     }
     sheet = get_sheet(doc, name);
     row = 1;
     column = 1;
     sheet_init = true;
-    if(just_created) {
-        if (name != "Sheet1" && doc.workbook( ).sheetExists("Sheet1")) {
-            doc.workbook( ).deleteSheet("Sheet1");
+    if (just_created) {
+        if (name != "Sheet1" && doc.workbook().sheetExists("Sheet1")) {
+            doc.workbook().deleteSheet("Sheet1");
         }
         just_created = false;
     }
@@ -59,7 +67,7 @@ void logger::set_heading(const std::vector<std::string> &heading) {
     row = 1;
     column = 1;
 
-    for (const auto &i : heading) {
+    for (const auto &i:heading) {
         write(i);
     }
 
@@ -75,13 +83,13 @@ void logger::set_page(const std::string &name,
 
 void logger::flush() {
     check_state();
-    doc.save( );
+    doc.save();
 }
 
 void logger::close() {
-    if(!closed) {
-        doc.save( );
-        doc.close( );
+    if (!closed) {
+        doc.save();
+        doc.close();
         closed = true;
     }
 }
@@ -89,13 +97,13 @@ void logger::close() {
 logger &logger::operator<<(const char &s) {
     check_state();
     if (s == '\n') {
-        return next_line( );
+        return next_line();
     }
     return write(s);
 }
 
 void logger::check_state() const {
-    if(closed) {
+    if (closed) {
         throw std::runtime_error("Illegal state.");
     }
 }

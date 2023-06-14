@@ -43,7 +43,7 @@ public:
     template<typename T>
     logger &write(const T &s) {
         check_state();
-        sheet.cell(XLCellReference(row, column++)).value( ) = s;
+        sheet.cell(XLCellReference(row, column++)).value() = s;
         return *this;
     }
 
@@ -55,14 +55,14 @@ public:
     template<typename T>
     logger &writeln(const T &s) {
         logger &ret = write(s);
-        next_line( );
+        next_line();
         return ret;
     }
 
     template<typename T, typename... Args>
     logger &writeln(const T &s, Args... ss) {
         logger &ret = (write(s), write(ss...));
-        next_line( );
+        next_line();
         return ret;
     }
 
@@ -71,7 +71,7 @@ public:
 
     logger &operator<<(const char &s);
 
-    ~logger() { close( ); }
+    ~logger() { close(); }
 };
 
 #endif // LOGGER_H
